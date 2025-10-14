@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Apps List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="./myFunctions.js"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <h1 class="top-nav">Artificial Intelligence Applications</h1>
+    <div class="bottom-nav">
+      <a href="./home.html">Home</a>
+      <a href="./About-Us.html">About Us</a>
+      <a href="./apps.html">Apps</a>
+      <a href="./add-app.html">Add App</a>
+    </div>
+  </nav>
+
+  <main class="apps-page rp">
+    <h1 class="title">Applications Table</h1>
+    <table class="apps-table" id="apps-table">
+       <tr>
+        <th>App Name</th>
+        <th>Company</th>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Details</th>
+      </tr>
+    </table>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 AI Apps Project</p>
+  </footer>
+
+
+  <script>
+    // Initial applications data array
+    const apps = [
+      {
+        id: 'app_1',
+        name: "ChatGPT",
+        company: "OpenAI",
+        field: "Productivity",
+        type: "Free",
+        website: "https://chat.openai.com",
+        isActive: false,
+        details: "Advanced AI chatbot capable of natural conversations, code generation, and creative writing. Uses GPT-4 architecture for sophisticated language understanding and generation."
+      },
+      {
+        id: 'app_2',
+        name: "Midjourney",
+        company: "Midjourney, Inc.",
+        field: "Creative",
+        type: "Paid",
+        website: "https://www.midjourney.com",
+        isActive: false,
+        details: "AI image generation tool that creates stunning visual art from text descriptions. Known for its artistic style and high-quality image output through Discord integration."
+      },
+      {
+        id: 'app_3',
+        name: "GitHub Copilot",
+        company: "GitHub (Microsoft)",
+        field: "Development",
+        type: "Free",
+        website: "https://github.com/features/copilot",
+        isActive: false,
+        details: "AI pair programmer that suggests code and entire functions in real-time. Trained on billions of lines of public code to provide context-aware programming assistance."
+      },
+      {
+        id: 'app_4',
+        name: "Grammarly",
+        company: "Grammarly",
+        field: "Writing",
+        type: "Free",
+        website: "https://www.grammarly.com",
+        isActive: false,
+        details: "AI-powered writing assistant that checks grammar, spelling, punctuation, clarity, and tone. Helps improve writing quality across emails, documents, and social media."
+      },
+      {
+        id: 'app_5',
+        name: "DALL-E 3",
+        company: "OpenAI",
+        field: "Creative",
+        type: "Paid",
+        website: "https://openai.com/dall-e-3",
+        isActive: false,
+        details: "State-of-the-art image generation AI that creates highly detailed and coherent images from text prompts. Integrated with ChatGPT for enhanced prompt understanding."
+      },
+      {
+        id: 'app_6',
+        name: "Jasper AI",
+        company: "Jasper",
+        field: "Marketing",
+        type: "Paid",
+        website: "https://www.jasper.ai",
+        isActive: false,
+        details: "AI content creation platform for marketers and businesses. Generates blog posts, social media content, ads, and marketing copy with brand voice consistency."
+      },
+      {
+        id: 'app_7',
+        name: "Runway ML",
+        company: "Runway",
+        field: "Video",
+        type: "Free",
+        website: "https://runwayml.com",
+        isActive: false,
+        details: "AI video editing platform with tools for video generation, editing, and effects. Includes features like green screen removal, motion tracking, and style transfer."
+      },
+      {
+        id: 'app_8',
+        name: "Notion AI",
+        company: "Notion Labs",
+        field: "Productivity",
+        type: "Free",
+        website: "https://www.notion.so",
+        isActive: false,
+        details: "AI writing assistant integrated into Notion workspace. Helps with content creation, summarization, translation, and improving writing across notes and documents."
+      },
+      {
+        id: 'app_9',
+        name: "Claude",
+        company: "Anthropic",
+        field: "Productivity",
+        type: "Free",
+        website: "https://claude.ai",
+        isActive: false,
+        details: "AI assistant focused on being helpful, honest, and harmless. Excels at complex reasoning, document analysis, and maintaining coherent long conversations."
+      },
+      {
+        id: 'app_10',
+        name: "Stable Diffusion",
+        company: "Stability AI",
+        field: "Creative",
+        type: "Free",
+        website: "https://stability.ai",
+        isActive: false,
+        details: "Open-source AI image generation model that can run locally on consumer hardware. Highly customizable with various community-developed models and extensions."
+      },
+      {
+        id: 'app_11',
+        name: "Otter.ai",
+        company: "Otter.ai",
+        field: "Business",
+        type: "Free",
+        website: "https://otter.ai",
+        isActive: false,
+        details: "AI-powered meeting transcription and note-taking service. Records audio, writes notes, captures slides, and generates summaries automatically."
+      },
+      {
+        id: 'app_12',
+        name: "Copy.ai",
+        company: "Copy.ai",
+        field: "Marketing",
+        type: "Free",
+        website: "https://www.copy.ai",
+        isActive: false,
+        details: "AI content generator for marketing teams. Creates social media posts, product descriptions, email campaigns, and website copy quickly and efficiently."
+      },
+      {
+        id: 'app_13',
+        name: "Descript",
+        company: "Descript",
+        field: "Audio/Video",
+        type: "Paid",
+        website: "https://www.descript.com",
+        isActive: false,
+        details: "AI-powered audio and video editing tool that works like a document editor. Features include transcription, overdub voice cloning, and screen recording."
+      },
+      {
+        id: 'app_14',
+        name: "Fireflies.ai",
+        company: "Fireflies",
+        field: "Business",
+        type: "Free",
+        website: "https://fireflies.ai",
+        isActive: false,
+        details: "AI meeting assistant that joins meetings, transcribes conversations, and provides insights. Integrates with popular meeting platforms and CRM systems."
+      },
+      {
+        id: 'app_15',
+        name: "Beautiful.AI",
+        company: "Beautiful.AI",
+        field: "Design",
+        type: "Paid",
+        website: "https://www.beautiful.ai",
+        isActive: false,
+        details: "AI-powered presentation tool that automatically designs slides and maintains consistent formatting. Smart templates adapt content to create professional presentations."
+      }
+    ];
+
+    
+    // Creates HTML table row for an application by using Application data object {Object} appInfo 
+    function createTableRow(appInfo){
+      const template = 
+      `<tr class="app-row" data-app-id="${appInfo.id}">
+        <td>${appInfo.name}</td>
+        <td>${appInfo.company}</td>
+        <td>${appInfo.field}</td>
+        <td>${appInfo.type}</td>
+        <td>
+          <input type="checkbox" class="details-checkbox" data-app-id="${appInfo.id}" ${appInfo.isActive?'checked':''}>
+        </td>
+      </tr>
+      <tr class="app-details-row${appInfo.isActive?' show':' hide'}" data-app-id="${appInfo.id}">
+        <td colspan="5">
+          <div class="app-details-frame">
+            <a target="_blank" href="${appInfo.website}">${appInfo.website}</a>
+            <p>
+              ${appInfo.details}
+            </p>
+          </div>
+        </td>
+      </tr>
+      `
+      return template
+    }
+
+    // Function to update app active status in localStorage
+    function updateAppStatus(appId, isActive) {
+      // Get current apps from localStorage or empty array if none exists
+      let appsTemp = JSON.parse(localStorage.getItem('apps')) || [];
+
+      // Find the index of the app with matching ID
+      const appIndex = appsTemp.findIndex(app => app.id === appId);
+      
+      // If app found, update its isActive status and save to localStorage
+      if (appIndex !== -1) {
+        appsTemp[appIndex].isActive = isActive;
+        localStorage.setItem('apps', JSON.stringify(appsTemp));
+      }
+    }
+
+    // Function to handle checkbox change
+    function handleCheckboxChange() {
+      const appId = $(this).data('app-id');
+      const isChecked = $(this).is(':checked');
+      
+      // Find the corresponding details row and toggle visibility
+      const detailsRow = $(`.app-details-row[data-app-id="${appId}"]`);
+      
+      // Toggle visibility classes based on checkbox state
+      if (isChecked) {
+        detailsRow.removeClass('hide').addClass('show');
+      } else {
+        detailsRow.removeClass('show').addClass('hide');
+      }
+      
+      // Update the status in localStorage
+      updateAppStatus(appId, isChecked);
+    }
+
+    $(document).ready(function(){
+      // Try to load apps from localStorage
+      let localStorageApps = JSON.parse(localStorage.getItem('apps')) 
+
+      // If no apps in localStorage, initialize with default apps and save them
+      if (!localStorageApps){
+        localStorage.setItem('apps', JSON.stringify(apps));
+        localStorageApps = apps
+      }
+
+      // Loop through each app and add its row to the table
+      const table = $('#apps-table')
+      for (let i = 0; i < localStorageApps.length; i++) {
+        const item = localStorageApps[i];
+        table.append (createTableRow(item))
+      }
+
+      // Add event listener to checkboxes
+      $('.details-checkbox').on('change', handleCheckboxChange);
+
+    })
+
+  </script>
+</body>
+</html>

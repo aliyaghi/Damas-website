@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="./myFunctions.js"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <h1 class="top-nav">Artificial Intelligence Applications</h1>
+    <div class="bottom-nav">
+      <a href="./home.html">Home</a>
+      <a href="./About-Us.html">About Us</a>
+      <a href="./apps.html">Apps</a>
+      <a href="./add-app.html">Add App</a>
+    </div>
+  </nav>
+
+  <main class="add-app-page">
+    <form id="add_new_app_form" method="POST">
+      <h1 class="title">Add Application</h1>
+      <div class="form-field">
+        <label for="appName">App Name <span class="star">*</span>:</label>
+        <input name="name" type="text" id="appName" autocomplete="true"><br>
+      </div>
+      <div class="form-field">
+        <label for="company">Company <span class="star">*</span>:</label>
+        <input name="company" type="text" id="company" autocomplete="true"><br>
+      </div>
+      <div class="form-field">
+        <label for="website">Website:</label>
+        <input name="website" type="url" id="website" autocomplete="true"><br>
+      </div>
+      <div class="form-field">
+        <label for="type">Type <span class="star">*</span>:</label>
+        <select id="type" name="type">
+          <option value="Free">Free</option>
+          <option value="Paid">Paid</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="field">Field <span class="star">*</span>:</label>
+        <select id="field" name="field">
+          <option value="Education">Education</option>
+          <option value="Health">Health</option>
+          <option value="Business">Business</option>
+          <option value="Robotics">Robotics</option>
+          <option value="Productivity">Productivity</option>
+          <option value="Creative">Creative</option>
+          <option value="Development">Development</option>
+          <option value="Writing">Writing</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Video">Video</option>
+          <option value="Audio/Video">Audio/Video</option>
+          <option value="Design">Design</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="details">details:</label>
+        <textarea id="details" rows="3" name="details" autocomplete="true"></textarea>
+      </div>
+
+      <div class="note">
+        *: is required field
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 AI Apps Project</p>
+  </footer>
+
+  <script>
+    let apps = []
+
+    $(document).ready(function(){
+      apps = JSON.parse(localStorage.getItem('apps')) 
+
+      $('#add_new_app_form').submit(function(event) {
+        // Prevent default form submission
+        event.preventDefault()
+
+        // Get the form data as an array of objects
+        var formDataArray = $(this).serializeArray()
+
+        // Convert the array of objects into a single JavaScript object
+        var formDataObject = {
+          id: 'app_' + (apps.length + 1),
+          isActive: false
+        }
+
+        $.each(formDataArray, function(i, field) {
+            // Handle multiple values for the same name (e.g., checkboxes, multi-select)
+            if (formDataObject[field.name]) {
+                if (!Array.isArray(formDataObject[field.name])) {
+                    formDataObject[field.name] = [formDataObject[field.name]];
+                }
+                formDataObject[field.name].push(field.value)
+            } else {
+                formDataObject[field.name] = field.value
+            }
+        });
+
+        // After processing all form data, validate each field value
+        let validationErrors = [];
+
+        // Validate App Name
+        if (!formDataObject.name || formDataObject.name.trim().length === 0) {
+            validationErrors.push("❌ App Name is required");
+        } else if (formDataObject.name.trim().length < 2) {
+            validationErrors.push("❌ App Name must be at least 2 characters long");
+        } else if (formDataObject.name.trim().length > 50) {
+            validationErrors.push("❌ App Name cannot exceed 50 characters");
+        } else if (!/^[\p{L}\p{N}\s\-_&]+$/u.test(formDataObject.name)) {
+            validationErrors.push("❌ App Name can only contain letters (including Arabic), numbers, spaces, hyphens, underscores, and ampersands");
+        }
+
+        // Validate Company
+        if (!formDataObject.company || formDataObject.company.trim().length === 0) {
+            validationErrors.push("❌ Company name is required");
+        } else if (formDataObject.company.trim().length < 2) {
+            validationErrors.push("❌ Company name must be at least 2 characters long");
+        } else if (formDataObject.company.trim().length > 50) {
+            validationErrors.push("❌ Company name cannot exceed 50 characters");
+        }
+
+        // Validate Website (optional but must be valid if provided)
+        if (formDataObject.website && formDataObject.website.trim().length > 0) {
+            try {
+                new URL(formDataObject.website);
+                // Additional URL format check
+                if (!/^https?:\/\/.+\..+$/.test(formDataObject.website)) {
+                    validationErrors.push("❌ Website URL must:\n   • Start with http:// or https://\n   • Use forward slashes (/) not backslashes (\\\\)\n   • Have a valid domain extension (.com, .org, etc.)\n   Example: https://example.com");
+                }
+            } catch (e) {
+                // Provide specific error message based on common mistakes
+                let specificError = "❌ Please enter a valid website URL";
+                
+                if (formDataObject.website.includes('\\\\')) {
+                    specificError = "❌ Website URL must use forward slashes (/) not backslashes (\\\\)\n   Change: https:\\\\example.com → https://example.com";
+                } else if (!formDataObject.website.includes('://')) {
+                    specificError = "❌ Website URL must include :// after http or https\n   Example: https://example.com";
+                } else if (!formDataObject.website.includes('.')) {
+                    specificError = "❌ Website URL must contain a domain extension (.com, .org, etc.)\n   Example: https://example.com";
+                } else if (!formDataObject.website.startsWith('http')) {
+                    specificError = "❌ Website URL must start with http:// or https://";
+                }
+                
+                validationErrors.push(specificError);
+            }
+        }
+
+        // Validate Type
+        if (!formDataObject.type) {
+            validationErrors.push("❌ Please select an app type");
+        } else if (!['Free', 'Paid', 'Freemium', 'Subscription'].includes(formDataObject.type)) {
+            validationErrors.push("❌ Please select a valid app type from the options");
+        }
+
+        // Validate Field
+        if (!formDataObject.field) {
+            validationErrors.push("❌ Please select a field");
+        } else if (!['Education', 'Health', 'Business', 'Robotics', 'Entertainment', 'Productivity', 'Other'].includes(formDataObject.field)) {
+            validationErrors.push("❌ Please select a valid field from the options");
+        }
+
+        // Validate Details (optional but check length if provided)
+        if (formDataObject.details && formDataObject.details.length > 500) {
+            validationErrors.push("❌ App details cannot exceed 500 characters");
+        }
+
+        // Check for duplicate app name
+        if (formDataObject.name) {
+            const isDuplicate = apps.some(app => 
+                app.name.toLowerCase().trim() === formDataObject.name.toLowerCase().trim()
+            );
+            if (isDuplicate) {
+                validationErrors.push("❌ An app with this name already exists. Please choose a different name.");
+            }
+        }
+
+        // If there are validation errors, show them and stop form submission
+        if (validationErrors.length > 0) {
+            let errorMessage = "Please fix the following errors:\n\n";
+            validationErrors.forEach((error, index) => {
+                errorMessage += `${index + 1}. ${error}\n`;
+            });
+            alert(errorMessage);
+            return false; // Stop form submission
+        }
+
+        // console.log(formData.name)
+        apps.push(formDataObject)
+        localStorage.setItem('apps', JSON.stringify(apps))
+        alert("App is seeccessfully added!")
+
+        // Redirect to apps page after a short delay
+        setTimeout(function() {
+            window.location.href = '/apps.html';
+        }, 2000); // 2 second delay
+      });
+    })
+
+
+
+    
+  </script>
+</body>
+</html>
