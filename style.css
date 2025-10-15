@@ -215,13 +215,29 @@ th, td {
 }
 .apps-page .apps-table tr.app-details-row{
   color: gray;
+  width: 100%;
+  max-width: 100%;
 }
 .apps-page .apps-table tr.app-details-row .app-details-frame{
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: start;
   padding: 1rem 2rem;
+  overflow-wrap: break-word;
+}
+.apps-page .apps-table tr.app-details-row .app-details-frame a{
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.apps-page .apps-table tr.app-details-row .app-details-frame p{
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 
