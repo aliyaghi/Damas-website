@@ -186,6 +186,17 @@ th, td {
 }
 
 
+/* ======================== about us page ========================== */
+.about-us-header{
+  width: 100%;
+  height: 25rem;
+  overflow: hidden;
+}
+.about-us-header img{
+  width: 100%;
+  width: 100%;
+  object-fit: cover;
+}
 /* ======================== apps page ========================== */
 .apps-page{
   min-height: 80vh;
